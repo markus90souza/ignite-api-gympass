@@ -2,7 +2,7 @@
 
 ## RFs (Requisitos funcionais)
 
-- [] Deve ser possivel se cadastrar;
+- [x] Deve ser possivel se cadastrar;
 - [] Deve ser possivel se autenticar;
 - [] Deve ser possivel obter o perfil de um usuario logado; 
 - [] Deve ser possivel obter o número de check-ins realizado pelo usuario logado;
@@ -15,8 +15,8 @@
 
 ## RNFs (Requisitos não funcionais)
 
-- [] A senha do usuário deve ser criptografada;
-- [] Os dados da aplicação dever ser armazenados em um banco de dados POSTGRES;
+- [x] A senha do usuário deve ser criptografada;
+- [x] Os dados da aplicação dever ser armazenados em um banco de dados POSTGRES;
 - [] Todas listas de dados deve estar páginadas com 20 itens por página
 - [] O usuário deve ser identifcado por um JWT (Json Web Token)
 
