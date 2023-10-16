@@ -1,15 +1,18 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { RegisterUseCase } from './register'
 import { compare } from 'bcrypt'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { UserAlreadyExistsError } from './errors/user-already-exists-error'
+import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists-error'
 
+let usersRepository: InMemoryUsersRepository
+let sut: RegisterUseCase
 describe('REGISTER USE CASE', () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRepository()
+    sut = new RegisterUseCase(usersRepository)
+  })
   it('should be able to register', async () => {
-    const usersRepository = new InMemoryUsersRepository()
-    const usersUseCase = new RegisterUseCase(usersRepository)
-
-    const { user } = await usersUseCase.execute({
+    const { user } = await sut.execute({
       name: 'John doe',
       email: 'test2@email.com',
       password: '12345678',
@@ -19,10 +22,7 @@ describe('REGISTER USE CASE', () => {
   })
 
   it('should hash user password upon registration', async () => {
-    const usersRepository = new InMemoryUsersRepository()
-    const usersUseCase = new RegisterUseCase(usersRepository)
-
-    const { user } = await usersUseCase.execute({
+    const { user } = await sut.execute({
       name: 'John doe',
       email: 'test2@email.com',
       password: '12345678',
@@ -34,19 +34,16 @@ describe('REGISTER USE CASE', () => {
   })
 
   it('should not be able to register with same email twice', async () => {
-    const usersRepository = new InMemoryUsersRepository()
-    const usersUseCase = new RegisterUseCase(usersRepository)
-
     const email = 'test2@email.com'
 
-    await usersUseCase.execute({
+    await sut.execute({
       name: 'John doe',
       email,
       password: '12345678',
     })
 
     await expect(() =>
-      usersUseCase.execute({
+      sut.execute({
         name: 'John doe',
         email,
         password: '12345678',
